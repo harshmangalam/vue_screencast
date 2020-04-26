@@ -7,7 +7,6 @@
         </v-row>
         <v-tabs>
             <v-tab to="/videos/my_videos">My Videos</v-tab>
-            <v-tab to="/videos/favourite_videos">Favourite Videos</v-tab>
             <v-tab to="/videos/explore_videos">Explore Videos</v-tab>
         </v-tabs>
         <div class="my-4">

@@ -8,7 +8,9 @@ export default new Vuex.Store({
     state: {
         videos: [],
         currentUser: {},
+        currentVideo: {},
         videoComments: [],
+        videoLikes: [],
         snackbars: [],
     },
     mutations: {
@@ -19,11 +21,17 @@ export default new Vuex.Store({
         SET_VIDEOS(state, videos) {
             state.videos = videos
         },
+        CURRENT_VIDEO(state, video) {
+            state.currentVideo = video
+        },
         CREATE_VIDEO(state, video) {
             state.videos = state.videos.concat(video)
         },
         SET_VIDEO_COMMENTS(state, comments) {
             state.videoComments = comments
+        },
+        SET_VIDEO_LIKES(state, likes) {
+            state.videoLikes = likes
         },
 
         SET_CURRENTUSER(state, user) {
@@ -40,6 +48,16 @@ export default new Vuex.Store({
     actions: {
         setSnackbar({ commit }, snackbar) {
             commit("SET_SNACKBARS", snackbar)
+        },
+
+        async setCurrentVideo({ commit }, video_id) {
+            try {
+                const res = await Api().get(`/videos/${video_id}`)
+                const { video } = res.data
+                commit("CURRENT_VIDEO", video)
+            } catch (error) {
+                console.log(error)
+            }
         },
 
         async fetchVideos({ commit }) {
@@ -60,6 +78,15 @@ export default new Vuex.Store({
                 console.log(error)
             }
         },
+        async fetchVideoLikes({ commit }, video_id) {
+            try {
+                const res = await Api().get(`/videos/${video_id}/like`)
+                const { likes } = res.data
+                commit("SET_VIDEO_LIKES", likes)
+            } catch (error) {
+                console.log(error)
+            }
+        },
 
 
 
@@ -68,6 +95,25 @@ export default new Vuex.Store({
                 const res = await Api().post("/videos", videoData)
                 const { message, video } = res.data
                 commit("CREATE_VIDEO", video)
+                return {
+                    text: message,
+                    color: "success"
+                }
+            } catch (error) {
+                console.log(error)
+                return {
+                    text: error.response.data.error,
+                    color: 'error'
+                }
+            }
+
+        },
+        async editVideo({ commit }, { videoData, video_id }) {
+            try {
+                const res = await Api().put(`/videos/${video_id}`, videoData)
+                const videos_data = await Api().get(`/videos`)
+                const { message } = res.data
+                commit("SET_VIDEOS", videos_data.data.videos)
                 return {
                     text: message,
                     color: "success"
@@ -169,6 +215,19 @@ export default new Vuex.Store({
                 }
             }
         },
+        async Bio({ commit }, data) {
+            try {
+                const res = await Api().post("/users/bio", { bio: data.bio })
+                const user = await Api().get(`/users/${data.user_id}`)
+                commit("SET_CURRENTUSER", user.data.user)
+                return {
+                    text: res.data.message,
+                    color: "success"
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        },
         async logout({ commit }) {
             try {
                 const res = await Api().get("/users/logout")
@@ -185,5 +244,16 @@ export default new Vuex.Store({
         }
 
     },
-    modules: {}
+    modules: {},
+    getters: {
+        getMyVideos(state) {
+            return state.videos.filter(video => video.creator._id == state.currentUser._id)
+        },
+
+        exploreVideos(state) {
+            return state.videos.sort((v1, v2) => v1.likes > v2.likes).slice(0, 5)
+        }
+
+
+    }
 })

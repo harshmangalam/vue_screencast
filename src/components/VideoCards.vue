@@ -14,19 +14,12 @@
                     </v-list-item>
                     <v-img :src="video.thumbnail" contain class="my-4" max-height="200"></v-img>
                     <v-card-title>{{video.name}}</v-card-title>
-                    <v-card-text>
-                        {{video.description}}
-                    </v-card-text>
+                    <v-card-text>{{video.description}}</v-card-text>
                     <v-card-actions>
-                        <v-btn text color="pink accent-4">
-                            watch now
-                        </v-btn>
-                        <v-btn text color="green accent-4">
-                            watch later
-                        </v-btn>
+                        <v-btn  color="blue darken-4" @click="watch(video._id)">watch now</v-btn>
                         <v-spacer></v-spacer>
                         <div v-if="currentUser && currentUser.name">
-                            <LikeVideo :video="video"/>
+                            <LikeVideo :video="video" />
                             <CommentVideo :video="video" />
                         </div>
                     </v-card-actions>
@@ -35,19 +28,22 @@
         </v-row>
     </div>
 </template>
-
 <script>
-import { mapState } from "vuex"
-import LikeVideo from "@/components/videoAction/LikeVideo.vue"
-import CommentVideo from "@/components/videoAction/CommentVideo.vue"
+import { mapState } from "vuex";
+import LikeVideo from "@/components/videoAction/LikeVideo.vue";
+import CommentVideo from "@/components/videoAction/CommentVideo.vue";
 export default {
-    components:{
-      LikeVideo,
-      CommentVideo
+    components: {
+        LikeVideo,
+        CommentVideo
     },
     computed: {
-        ...mapState(["videos","currentUser"])
+        ...mapState(["videos", "currentUser"])
     },
-
+    methods:{
+        watch(video_id){
+            this.$router.push(`/watch/${video_id}`)
+        }
+    }
 };
 </script>

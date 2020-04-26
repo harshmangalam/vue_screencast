@@ -9,7 +9,8 @@
                     <v-list-item-title>{{comment.commentBy.name}}</v-list-item-title>
                     <v-list-item-subtitle v-html="comment.commentBody"></v-list-item-subtitle>
                     <p><small>{{new Date(comment.createdAt).toDateString()}}</small></p>
-                    <v-divider></v-divider>
+                    <v-divider></v-divider>cd ..
+                    
                 </v-list-item-content>
             </v-list-item>
             <v-divider></v-divider>

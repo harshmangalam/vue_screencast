@@ -71,11 +71,10 @@ export default {
         auth_items: [
             { title: 'Home', icon: 'mdi-home-city', to: "/" },
             { title: 'Videos', icon: 'mdi-video', to: "/videos" },
-            { title: 'Watch Later', icon: 'mdi-account-group-outline', to: "/watch_later" },
             { title: 'Dashboard', icon: 'mdi-video', to: "/dashboard" },
 
             { title: 'Profile', icon: 'mdi-account', to: "/profile" },
-            
+
 
         ],
     }),
@@ -89,6 +88,6 @@ export default {
             await this.$store.dispatch("setSnackbar",{...msg,showing:true})
         }
     }
-   
+
 }
 </script>

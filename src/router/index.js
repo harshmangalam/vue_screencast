@@ -6,70 +6,68 @@ import Signup from '../views/Signup.vue'
 import Videos from '../views/Videos/Videos.vue'
 import ExploreVideos from '../views/Videos/ExploreVideos.vue'
 import MyVideos from '../views/Videos/MyVideos.vue'
-import FavouriteVideos from '../views/Videos/FavouriteVideos.vue'
 import Dashboard from '../views/Dashboard.vue'
 import Profile from '../views/Profile.vue'
+import Watch from '@/views/Watch.vue'
+
 
 
 Vue.use(VueRouter)
 
-  const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-{
-    path: '/login',
-    name: 'Login',
-    component: Login
-  },
-  {
-    path: '/signup',
-    name: 'Signup',
-    component: Signup
-  },
+const routes = [{
+        path: '/',
+        name: 'Home',
+        component: Home
+    },
     {
-    path: "/videos",
-    redirect:"/videos/my_videos",
-    name: "Videos",
-    component: Videos,
-    children: [
-      {
-        path: "explore_videos",
-        name: "ExploreVideos",
-        component: ExploreVideos
-      },
+        path: '/login',
+        name: 'Login',
+        component: Login
+    },
+    {
+        path: '/signup',
+        name: 'Signup',
+        component: Signup
+    },
+    {
+        path: '/watch/:video_id',
+        name: 'Watch',
+        component: Watch
+    },
+    {
+        path: "/videos",
+        redirect: "/videos/my_videos",
+        name: "Videos",
+        component: Videos,
+        children: [{
+                path: "explore_videos",
+                name: "ExploreVideos",
+                component: ExploreVideos
+            },
 
-      {
-        path: "my_videos",
-        name: "MyVideos",
-        component:MyVideos
-      },
-       {
-        path: "favourite_videos",
-        name: "FavouriteVideos",
-        component:FavouriteVideos
-      },
-    
-    ]
-  },
-  {
-    path:"/dashboard",
-    name:"Dashboard",
-    component:Dashboard
-  },
-  {
-    path:"/profile",
-    name:"Profile",
-    component:Profile
-  }
+            {
+                path: "my_videos",
+                name: "MyVideos",
+                component: MyVideos
+            },
+        ]
+    },
+    {
+        path: "/dashboard",
+        name: "Dashboard",
+        component: Dashboard
+    },
+    {
+        path: "/profile",
+        name: "Profile",
+        component: Profile
+    }
 ]
 
 const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes
+    mode: 'history',
+    base: process.env.BASE_URL,
+    routes
 })
 
 export default router

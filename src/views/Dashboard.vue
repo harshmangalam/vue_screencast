@@ -3,6 +3,7 @@
         <v-container>
             <v-timeline :dense="$vuetify.breakpoint.smAndDown">
                 <v-timeline-item v-for="(video,i) in my_videos" :key="video._id" color="blue lighten-3" fill-dot :right="i%2==0?true:false">
+                    {{new Date(video.createdAt).toDateString()}}
                     <v-row justify="center">
                         <v-col cols="12" xs="12" sm="12" md="12">
                             <v-card>
@@ -15,7 +16,7 @@
                                             <img :src="video.thumbnail" />
                                         </v-col>
                                         <v-col cols="12" xs="12" sm="6" md="6">
-                                            <h2 class="purple--text">video description</h2>
+                                            <h3 class="grey--text">video description</h3>
                                             <v-divider></v-divider>
                                             <div class="my-2 blue--text">
                                                 <b>{{video.description}}</b>
@@ -33,7 +34,7 @@
                                                     <v-btn @click="deleteVideo(video._id)" color="red" text>Delete</v-btn>
                                                 </v-col>
                                                 <v-col cols="12" xs="12" sm="6" md="6">
-                                                    <v-btn color="green" text>Edit</v-btn>
+                                                    <EditVideo :video="video" />
                                                 </v-col>
                                             </v-row>
                                         </v-col>
@@ -49,7 +50,11 @@
 </template>
 <script>
 import { mapState } from "vuex"
+import EditVideo from "@/components/videoAction/EditVideo"
 export default {
+    components:{
+        EditVideo,
+    },
     computed: {
         ...mapState(["videos", "currentUser"]),
         my_videos() {
